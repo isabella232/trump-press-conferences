@@ -7,7 +7,7 @@ Cron jobs
 import logging
 
 from datetime import datetime
-from fabric.api import local, require, task
+from fabric.api import execute, local, require, task
 
 import app_config
 import copytext
@@ -22,6 +22,7 @@ logger.setLevel(logging.INFO)
 
 @task
 def publish_json():
+    execute('text.update')
     tweet_count = 0
     currentID = 0
     last_conf_date, last_conf_endtime = read_spreadsheet()
