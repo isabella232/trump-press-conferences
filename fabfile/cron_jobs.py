@@ -50,6 +50,7 @@ def read_spreadsheet():
 
     return last_conf_date, last_conf_endtime
 
+
 def get_trump_tweets(utc_time, currentID, tweet_count):
 
     api = twitter.Api(consumer_key=os.environ['TRUMP_TWITTER_CONSUMER_KEY'],
@@ -83,7 +84,6 @@ def get_trump_tweets(utc_time, currentID, tweet_count):
     return get_trump_tweets(utc_time, currentID, tweet_count)
 
 
-
 def create_utc_time(date, time):
     month, day, year = date.split('/')
     hour, everything_else = time.split(':')
@@ -96,24 +96,10 @@ def create_utc_time(date, time):
 
     hour = hour.zfill(2)
 
-
     est = pytz.timezone('US/Eastern')
     full_datetime = '%s/%s/%s %s:%s' % (month, day, year, hour, everything_else)
-    print(full_datetime)
-
     parsed = datetime.strptime(full_datetime, '%m/%d/%Y %I:%M %p')
     with_timezone = est.localize(parsed, is_dst=None)
     utc = with_timezone.astimezone(pytz.utc)
 
-
     return utc
-
-@task
-def test():
-    """
-    Example cron task. Note we use "local" instead of "run"
-    because this will run on the server.
-    """
-    require('settings', provided_by=['production', 'staging'])
-
-    local('echo $DEPLOYMENT_TARGET > /tmp/cron_test.txt')
