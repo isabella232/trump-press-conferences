@@ -125,6 +125,15 @@ def delete_project():
     """
     run('rm -rf %(SERVER_PROJECT_PATH)s' % app_config.__dict__)
 
+@task
+def install_google_oauth_creds():
+    """
+    Install Google Oauth credentials file (global) from workinprivate repo
+    """
+    run('git clone git@github.com:nprapps/workinprivate.git /tmp/workinprivate-tmp')
+    run('cp /tmp/workinprivate-tmp/.google_oauth_credentials %s' % app_config.GOOGLE_OAUTH_CREDENTIALS_PATH)
+    run('rm -Rf /tmp/workinprivate-tmp')
+
 """
 Fabcasting
 """
