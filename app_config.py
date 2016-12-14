@@ -11,6 +11,9 @@ See get_secrets() below for a fast way to access them.
 import logging
 import os
 
+from authomatic.providers import oauth2
+from authomatic import Authomatic
+
 """
 NAMES
 """
@@ -28,10 +31,18 @@ REPOSITORY_URL = 'git@github.com:%s/%s.git' % (GITHUB_USERNAME, REPOSITORY_NAME)
 REPOSITORY_ALT_URL = None # 'git@bitbucket.org:nprapps/%s.git' % REPOSITORY_NAME'
 
 """
+COPY EDITING
+"""
+COPY_GOOGLE_DOC_KEY = '1tN7hvYg5b1_E93dhohmF6P1hiuyN4T4GwIw2Nd-oH-s'
+COPY_PATH = 'data/copy.xlsx'
+
+"""
 DEPLOYMENT
 """
 PRODUCTION_S3_BUCKET = 'apps.npr.org'
 STAGING_S3_BUCKET = 'stage-apps.npr.org'
+
+GRAPHIC_SLUG = 'dailygraphics/graphics/trump-press-tracker-20161213'
 
 PRODUCTION_SERVERS = ['cron.nprapps.org']
 STAGING_SERVERS = ['cron-staging.nprapps.org']
@@ -57,6 +68,25 @@ SERVERS = []
 SERVER_BASE_URL = None
 SERVER_LOG_PATH = None
 DEBUG = True
+
+"""
+OAUTH
+"""
+
+GOOGLE_OAUTH_CREDENTIALS_PATH = '~/.google_oauth_credentials'
+
+authomatic_config = {
+    'google': {
+        'id': 1,
+        'class_': oauth2.Google,
+        'consumer_key': os.environ.get('GOOGLE_OAUTH_CLIENT_ID'),
+        'consumer_secret': os.environ.get('GOOGLE_OAUTH_CONSUMER_SECRET'),
+        'scope': ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/userinfo.email'],
+        'offline': True,
+    },
+}
+
+authomatic = Authomatic(authomatic_config, os.environ.get('AUTHOMATIC_SALT'))
 
 """
 Logging

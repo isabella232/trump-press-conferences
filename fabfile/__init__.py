@@ -5,6 +5,8 @@ from fabric.state import env
 
 import app_config
 
+import text
+
 if app_config.DEPLOY_TO_SERVERS:
     import servers
 
